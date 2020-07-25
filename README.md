@@ -79,15 +79,45 @@ AuthArmor::Client.auth_request(
 
 ### Optional arguments
 
-`timeout_in_seconds`, `accepted_auth_methods`, `forcebiometric`
 
-If `forcebiometric` is false by default. It is only applicable if one of the `accepted_auth_methods` is `mobiledevice`
+- `forcebiometric` - this is false by default. It is only applicable if one of the `accepted_auth_methods` is `mobiledevice`
 
-`accepted_auth_methods` can either be `mobiledevice` or `securitykey`. If neither is provided, both auth methods are acceptable.
+- `accepted_auth_methods` - this can either be `mobiledevice` or `securitykey`. If neither is provided, both auth methods are acceptable.
 
-`timeout_in_seconds` is the amount of time you want to allow the auth to be valid before it expires. The min is 15, and max is 300. If not provided, the default time for the project is used.
+- `timeout_in_seconds` - this is the amount of time you want to allow the auth to be valid before it expires. The min is 15, and max is 300. If not provided, the default time for the project is used.
 
 
+## Invite Request
+
+To generate an invite, call the `invite_request` method with a `nickname`
+
+```ruby
+AuthArmor::Client.invite_request(
+  nickname: "NICKNAME"
+)
+```
+
+### Optional arguments
+
+`reference_id` - This is an optional value that you can set to further cross reference your records.
+
+### Consuming an invite using QR code
+
+Once an invite request is created, calling the `generate_qr_code` method returns a JSON that you can generate a QR code.
+
+```ruby
+AuthArmor::Client.generate_qr_code
+
+```
+
+### Consuming an invite using link
+
+Once an invite request is created, calling the `get_invite_link` method returns a link that can be shared.
+
+
+```ruby
+AuthArmor::Client.get_invite_link
+```
 
 ## Development
 
