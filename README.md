@@ -43,17 +43,6 @@ AuthArmor::Client.auth_request(
 )
 ```
 
-### Optional arguments
-
-`timeout_in_seconds`, `accepted_auth_methods`, `forcebiometric`
-
-If `forcebiometric` is false by default. It is only applicable if one of the `accepted_auth_methods` is `mobiledevice`
-
-`accepted_auth_methods` can either be `mobiledevice` or `securitykey`. If neither is provided, both auth methods are acceptable.
-
-`timeout_in_seconds` is the amount of time you want to allow the auth to be valid before it expires. The min is 15, and max is 300. If not provided, the default time for the project is used.
-
-
 ### Auth Request for Mobile Device
 
 ```ruby
@@ -87,6 +76,18 @@ AuthArmor::Client.auth_request(
   accepted_auth_methods: "securitykey"
 )
 ```
+
+### Optional arguments
+
+`timeout_in_seconds`, `accepted_auth_methods`, `forcebiometric`
+
+If `forcebiometric` is false by default. It is only applicable if one of the `accepted_auth_methods` is `mobiledevice`
+
+`accepted_auth_methods` can either be `mobiledevice` or `securitykey`. If neither is provided, both auth methods are acceptable.
+
+`timeout_in_seconds` is the amount of time you want to allow the auth to be valid before it expires. The min is 15, and max is 300. If not provided, the default time for the project is used.
+
+
 
 ## Development
 
