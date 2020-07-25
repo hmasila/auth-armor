@@ -1,13 +1,13 @@
-require_relative 'lib/auth_armor/version'
+require_relative 'lib/auth/armor/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "auth-armor"
-  spec.version       = Auth::Armor::VERSION
+  spec.version       = AuthArmor::VERSION
   spec.authors       = ["Hannah Masila"]
   spec.email         = ["hannahmasila@gmail.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because RubyGems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
+  spec.summary       = %q{Write a short summary, because RubyGems requires one.}
+  spec.description   = %q{Write a longer description or delete this line.}
   spec.homepage      = "https://rubygems.org/gems/auth-armor"
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
@@ -29,4 +29,5 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 2.1.4"
   spec.add_development_dependency "rake", "~> 13.0"
+  spec.add_dependency "rest-client"
 end

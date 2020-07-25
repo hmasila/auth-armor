@@ -1,5 +1,0 @@
-module Auth
-  module Armor
-    VERSION = "0.1.0"
-  end
-end
