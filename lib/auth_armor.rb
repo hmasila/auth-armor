@@ -5,15 +5,19 @@ require 'json'
 module AuthArmor
 
 	API_URL = "https://api.autharmor.com/v1"
+	ACCEPTED_SCOPES = [
+		"aarmor.api.generate_invite_code aarmor.api.request_auth",
+		"aarmor.api.generate_invite_code",
+		"aarmor.api.request_auth"
+	]
 
   class Error < StandardError; end
 
   class Client
-  
 	  attr_accessor :access_token
 
 	  def initialize(scope: "aarmor.api.generate_invite_code aarmor.api.request_auth", client_id: , client_secret:)
-	  	# check if scopes are in the list
+	  	fail "Accepted scopes are aarmor.api.generate_invite_code or aarmor.api.request_auth. Default is both."
 
 	    payload = {
 	      client_id: client_id,
