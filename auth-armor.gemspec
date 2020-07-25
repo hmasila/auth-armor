@@ -6,8 +6,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Hannah Masila"]
   spec.email         = ["hannahmasila@gmail.com"]
 
-  spec.summary       = %q{Write a short summary, because RubyGems requires one.}
-  spec.description   = %q{Write a longer description or delete this line.}
+  spec.summary       = %q{AuthArmor is Password-less login and 2FA using biometrics secured by hardware and PKI.}
+  spec.description   = %q{This library provides convenient access to the AuthArmor API from applications written in the Ruby language. It includes a pre-defined set of methods for API resources that initialize themselves dynamically from API responses.}
   spec.homepage      = "https://rubygems.org/gems/auth-armor"
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
