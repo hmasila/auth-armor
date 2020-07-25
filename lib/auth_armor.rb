@@ -4,7 +4,7 @@ require 'json'
 
 module AuthArmor
 
-	SITE_PATH = "https://api.autharmor.com/"
+	API_URL = "https://api.autharmor.com/v1"
 
   class Error < StandardError; end
 
@@ -31,16 +31,14 @@ module AuthArmor
 	    end
 	  end
 
-	  def connect(payload: {}, params: {}, method:, endpoint:)
-	  	RestClient::Request.execute(
-			  method: method,
-			  url: "#{API_URL}/#{endpoint}",
-			  payload: payload,
-			  headers: {
+	  def connect(payload: {}, method:, endpoint:)
+	  	RestClient.post("#{API_URL}/#{endpoint}",
+			  payload.to_json,
+			  {
 			  	content_type: 'application/json',
-			  	Authorization: "Bearer #{@access_token}",
-			  	params: params
+			  	Authorization: "Bearer #{@access_token}"
 			  }) do |response, request, result|
+	  		# require 'pry'; binding.pry
 			  case response.code
 			  when 400
 			    [ :error, JSON.parse(response.to_str) ]
@@ -55,36 +53,48 @@ module AuthArmor
 		  JSON.parse(err.response.to_str)
 	  end
 
-	  def auth_request
+	  def auth_request(timeout_in_seconds: nil, forcebiometric: false, accepted_auth_methods: nil, auth_profile_id:, action_name:, short_msg:)
 	  	payload = {
 			  auth_profile_id: "a6f30675-3fe1-400d-af8d-ff1b902fd98d",
 			  action_name: "Login",
 			  short_msg: "Login requested detected from IP: 192.160.0.1",
-			  timeout_in_seconds: "120",
-			  accepted_auth_methods: [
-			      {
-			        name: "mobiledevice",      
-			        rules: [
-			          {
-			            name: "forcebiometric",
-			            value: "true"
-			          }
-			        ]
-			      },
-			      {
-			        name: "securitykey",
-			      }
-			    ]
-			  }
+			  timeout_in_seconds: timeout_in_seconds,
+			  accepted_auth_methods: auth_methods(accepted_auth_methods, forcebiometric)
+			}
 
-	  	response = connect(payload: payload, method: :post, endpoint: "auth/request")
+	  	connect(payload: payload, method: :post, endpoint: "auth/request")
 	  end
 
-	  def security_key_auth_request
+	  def invite_request(reference_id: nil, nickname:)
+	  	payload = {
+	  		nickname: nickname,
+	  		reference_id: reference_id
+	  	}
+
+	  	connect(payload: payload, method: :post, endpoint: "invite/request")
 	  end
 
-	  def get_invite_link
-	  	"it works"
+	  private
+
+	  def auth_methods(accepted_auth_methods, forcebiometric)
+	  	mobile_device = {
+        name: "mobiledevice",      
+        rules: [
+          {
+            name: "forcebiometric",
+            value: forcebiometric
+          }
+        ]
+      }
+			security_key = { name: "securitykey" }
+
+			if accepted_auth_methods == "securitykey"
+				[securitykey]
+			elsif accepted_auth_methods == "mobiledevice"
+				[mobiledevice]
+			else
+				[mobiledevice, securitykey]
+	  	end
 	  end
 	end
 end
