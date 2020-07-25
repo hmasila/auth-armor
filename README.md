@@ -1,8 +1,8 @@
-# Auth::Armor
+# AuthArmor
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/auth/armor`. To experiment with that code, run `bin/console` for an interactive prompt.
+AuthArmor is Password-less login and 2FA using biometrics secured by hardware and PKI.
 
-TODO: Delete this and the text above, and describe your gem
+This library provides convenient access to the AuthArmor API from applications written in the Ruby language. It includes a pre-defined set of methods for API resources that initialize themselves dynamically from API responses.
 
 ## Installation
 
