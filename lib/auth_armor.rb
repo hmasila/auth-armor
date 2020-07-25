@@ -15,7 +15,7 @@ module AuthArmor
   class Error < StandardError; end
 
   class Client
-	  attr_accessor :access_token
+	  attr_accessor :access_token, :invite_code
 
 	  def initialize(scope: "aarmor.api.generate_invite_code aarmor.api.request_auth", client_id: , client_secret:)
 	  	fail "Scope not allowed." unless ACCEPTED_SCOPES.include? scope
@@ -75,16 +75,22 @@ module AuthArmor
 	  		reference_id: reference_id
 	  	}
 
-	  	connect(payload: payload, method: :post, endpoint: "invite/request")
+	  	response = connect(payload: payload, method: :post, endpoint: "invite/request")
+
+	  	if response["code"] == :success
+	  		@invite_code = response["response"]
+	  	else
+	  		@invite_code = nil
+	  	end
+
+	  	response
 	  end
 
-	  def generate_qr_code(reference_id: nil, nickname:)
-	  	response = invite_request(reference_id: reference_id, nickname: nickname)
-
-	  	fail "QR code could not be generated" unless response["code"] == :success 
+	  def generate_qr_code
+	  	fail "QR code could not be generated. Use the invite_request method to get an invite code" if @invite_code.nil?
 	  	
-	  	aa_sig = response["response"]["aa_sig"]
-	  	invite_code = response["response"]["invite_code"]
+	  	aa_sig = @invite_code["aa_sig"]
+	  	invite_code = @invite_code["invite_code"]
 
 			{
 			  "type": "profile_invite",
@@ -98,13 +104,11 @@ module AuthArmor
 
 	  end
 
-	  def get_invite_link(reference_id: nil, nickname:)
-	  	response = invite_request(reference_id: reference_id, nickname: nickname)
+	  def get_invite_link
+	  	fail "Invite link could not be generated. Use the invite_request method to get an invite code" if @invite_code.nil?
 
-	  	fail "Invite link could not be generated" unless response["code"] == :success
-
-	  	aa_sig = response["response"]["aa_sig"]
-	  	invite_code = response["response"]["invite_code"]
+	  	aa_sig = @invite_code["aa_sig"]
+	  	invite_code = @invite_code["invite_code"]
 	  	
 	  	"#{INVITE_URL}/?i=#{invite_code}&aa_sig=#{aa_sig}"
 	  end
