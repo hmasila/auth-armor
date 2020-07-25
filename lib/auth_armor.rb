@@ -5,6 +5,7 @@ require 'json'
 module AuthArmor
 
 	API_URL = "https://api.autharmor.com/v1"
+	INVITE_URL = "https://invite.autharmor.com"
 	ACCEPTED_SCOPES = [
 		"aarmor.api.generate_invite_code aarmor.api.request_auth",
 		"aarmor.api.generate_invite_code",
@@ -17,7 +18,7 @@ module AuthArmor
 	  attr_accessor :access_token
 
 	  def initialize(scope: "aarmor.api.generate_invite_code aarmor.api.request_auth", client_id: , client_secret:)
-	  	fail "Accepted scopes are aarmor.api.generate_invite_code or aarmor.api.request_auth. Default is both."
+	  	fail "Scope not allowed." unless ACCEPTED_SCOPES.include? scope
 
 	    payload = {
 	      client_id: client_id,
@@ -42,12 +43,11 @@ module AuthArmor
 			  	content_type: 'application/json',
 			  	Authorization: "Bearer #{@access_token}"
 			  }) do |response, request, result|
-	  		# require 'pry'; binding.pry
 			  case response.code
 			  when 400
-			    [ :error, JSON.parse(response.to_str) ]
+			    { code: :error, response: JSON.parse(response.to_str) }
 			  when 200
-			    [ :success, JSON.parse(response.to_str) ]
+			   	{ "code" => :success, "response" => JSON.parse(response.to_str) }
 			  else
 			    fail "Invalid response #{response.to_str} received."
 			  end
@@ -76,6 +76,34 @@ module AuthArmor
 	  	}
 
 	  	connect(payload: payload, method: :post, endpoint: "invite/request")
+	  end
+
+	  def generate_qr_code(reference_id: nil, nickname:)
+	  	response = invite_request(reference_id: reference_id, nickname: nickname)
+
+	  	fail "QR code could not be generated" unless response["code"] == :success 
+	  	
+	  	aa_sig = response["response"]["aa_sig"]
+	  	invite_code = response["response"]["invite_code"]
+
+			{
+			  "type": "profile_invite",
+			  "version": 1,
+			  "format_id": 1,
+			  "payload": {
+			    "aa_sig": aa_sig,
+			    "invite_code": invite_code
+			  }
+			}
+
+	  end
+
+	  def get_invite_link(reference_id: nil, nickname:)
+	  	response = invite_request(reference_id: reference_id, nickname: nickname)
+
+	  	fail "Invite link could not be generated" unless response["code"] == :success 
+	  	
+	  	"#{INVITE_URL}/?i=INVITE_CODE>&aa_sig=AA_SIG"
 	  end
 
 	  private
