@@ -59,9 +59,9 @@ module AuthArmor
 
 	  def auth_request(timeout_in_seconds: nil, forcebiometric: false, accepted_auth_methods: nil, auth_profile_id:, action_name:, short_msg:)
 	  	payload = {
-			  auth_profile_id: "a6f30675-3fe1-400d-af8d-ff1b902fd98d",
-			  action_name: "Login",
-			  short_msg: "Login requested detected from IP: 192.160.0.1",
+			  auth_profile_id: auth_profile_id,
+			  action_name: action_name,
+			  short_msg: short_msg,
 			  timeout_in_seconds: timeout_in_seconds,
 			  accepted_auth_methods: auth_methods(accepted_auth_methods, forcebiometric)
 			}
@@ -101,9 +101,12 @@ module AuthArmor
 	  def get_invite_link(reference_id: nil, nickname:)
 	  	response = invite_request(reference_id: reference_id, nickname: nickname)
 
-	  	fail "Invite link could not be generated" unless response["code"] == :success 
+	  	fail "Invite link could not be generated" unless response["code"] == :success
+
+	  	aa_sig = response["response"]["aa_sig"]
+	  	invite_code = response["response"]["invite_code"]
 	  	
-	  	"#{INVITE_URL}/?i=INVITE_CODE>&aa_sig=AA_SIG"
+	  	"#{INVITE_URL}/?i=#{invite_code}&aa_sig=#{aa_sig}"
 	  end
 
 	  private
@@ -121,11 +124,11 @@ module AuthArmor
 			security_key = { name: "securitykey" }
 
 			if accepted_auth_methods == "securitykey"
-				[securitykey]
+				[security_key]
 			elsif accepted_auth_methods == "mobiledevice"
-				[mobiledevice]
+				[mobile_device]
 			else
-				[mobiledevice, securitykey]
+				[mobile_device, security_key]
 	  	end
 	  end
 	end
