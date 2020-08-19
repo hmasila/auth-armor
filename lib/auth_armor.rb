@@ -57,13 +57,18 @@ module AuthArmor
 		  JSON.parse(err.response.to_str)
 	  end
 
-	  def auth_request(timeout_in_seconds: nil, forcebiometric: false, accepted_auth_methods: nil, auth_profile_id:, action_name:, short_msg:)
+	  def auth_request(longitude: nil, latitude: nil, nonce: nil, timeout_in_seconds: nil, forcebiometric: false, accepted_auth_methods: nil, nickname:, action_name:, short_msg:)
 	  	payload = {
-			  auth_profile_id: auth_profile_id,
+			  nickname: nickname,
 			  action_name: action_name,
 			  short_msg: short_msg,
 			  timeout_in_seconds: timeout_in_seconds,
-			  accepted_auth_methods: auth_methods(accepted_auth_methods, forcebiometric)
+			  nonce: nonce,
+			  accepted_auth_methods: auth_methods(accepted_auth_methods, forcebiometric),
+			  origin_location_data: {
+				  longitude: longitude,
+				  latitude: latitude
+			  }
 			}
 
 	  	connect(payload: payload, method: :post, endpoint: "auth/request")

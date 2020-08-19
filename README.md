@@ -37,7 +37,7 @@ To send an Auth request to the a mobile device or security key, call the `auth_r
 
 ```ruby
 AuthArmor::Client.auth_request(
-  auth_profile_id: "AUTH_PROFILE_ID",
+  nickname: "NICKNAME",
   action_name: "Login",
   short_msg: "This is a test message",
 )
@@ -47,7 +47,7 @@ AuthArmor::Client.auth_request(
 
 ```ruby
 AuthArmor::Client.auth_request(
-  auth_profile_id: "AUTH_PROFILE_ID",
+  nickname: "NICKNAME",
   action_name: "Login",
   short_msg: "This is a test message",
   accepted_auth_methods: "mobiledevice"
@@ -58,7 +58,7 @@ AuthArmor::Client.auth_request(
 
 ```ruby
 AuthArmor::Client.auth_request(
-  auth_profile_id: "AUTH_PROFILE_ID",
+  nickname: "NICKNAME",
   action_name: "Login",
   short_msg: "This is a test message",
   accepted_auth_methods: "mobiledevice",
@@ -70,7 +70,7 @@ AuthArmor::Client.auth_request(
 
 ```ruby
 AuthArmor::Client.auth_request(
-  auth_profile_id: "AUTH_PROFILE_ID",
+  nickname: "NICKNAME",
   action_name: "Login",
   short_msg: "This is a test message",
   accepted_auth_methods: "securitykey"
@@ -84,7 +84,13 @@ AuthArmor::Client.auth_request(
 
 - `accepted_auth_methods` - this can either be `mobiledevice` or `securitykey`. If neither is provided, both auth methods are acceptable.
 
+- `nonce` - An optional value that is signed and returned in the request. This helps validate the response was from your request and no one has done a man-in-the-middle attack.
+
 - `timeout_in_seconds` - this is the amount of time you want to allow the auth to be valid before it expires. The min is 15, and max is 300. If not provided, the default time for the project is used.
+
+- `latitude` - this is the latitude where the request originated from.
+
+- `langitude` - this is the longitude where the request originated from. If provided, location details will show in the push message about the origin of the request.
 
 
 ## Invite Request
