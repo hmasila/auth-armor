@@ -26,7 +26,7 @@ The library needs to be instantiated with your client_id and client_secret. This
 
 ```ruby
 require "auth-armor"
-AuthArmor::Client.new(client_id: "CLIENT_ID", client_secret: "CLIENT_SECRET")
+client = AuthArmor::Client.new(client_id: "CLIENT_ID", client_secret: "CLIENT_SECRET")
 
 ```
 
@@ -36,7 +36,7 @@ AuthArmor::Client.new(client_id: "CLIENT_ID", client_secret: "CLIENT_SECRET")
 To send an Auth request to the a mobile device or security key, call the `auth_request` method with the following arguments
 
 ```ruby
-AuthArmor::Client.auth_request(
+client.auth_request(
   nickname: "NICKNAME",
   action_name: "Login",
   short_msg: "This is a test message",
@@ -46,7 +46,7 @@ AuthArmor::Client.auth_request(
 ### Auth Request for Mobile Device
 
 ```ruby
-AuthArmor::Client.auth_request(
+client.auth_request(
   nickname: "NICKNAME",
   action_name: "Login",
   short_msg: "This is a test message",
@@ -57,7 +57,7 @@ AuthArmor::Client.auth_request(
 ### Auth Request for Mobile Device when Biometrics are enforced
 
 ```ruby
-AuthArmor::Client.auth_request(
+client.auth_request(
   nickname: "NICKNAME",
   action_name: "Login",
   short_msg: "This is a test message",
@@ -69,7 +69,7 @@ AuthArmor::Client.auth_request(
 ### Auth Request for Security Key
 
 ```ruby
-AuthArmor::Client.auth_request(
+client.auth_request(
   nickname: "NICKNAME",
   action_name: "Login",
   short_msg: "This is a test message",
@@ -98,7 +98,7 @@ AuthArmor::Client.auth_request(
 To generate an invite, call the `invite_request` method with a `nickname`
 
 ```ruby
-AuthArmor::Client.invite_request(
+client.invite_request(
   nickname: "NICKNAME"
 )
 ```
@@ -112,7 +112,7 @@ AuthArmor::Client.invite_request(
 Once an invite request is created, calling the `generate_qr_code` method returns a JSON that you can generate a QR code.
 
 ```ruby
-AuthArmor::Client.generate_qr_code
+client.generate_qr_code
 
 ```
 
@@ -122,7 +122,7 @@ Once an invite request is created, calling the `get_invite_link` method returns 
 
 
 ```ruby
-AuthArmor::Client.get_invite_link
+client.get_invite_link
 ```
 
 ## Development
