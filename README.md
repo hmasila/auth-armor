@@ -107,6 +107,8 @@ client.invite_request(
 
 `reference_id` - This is an optional value that you can set to further cross reference your records.
 
+`reset_and_reinvite` - If you need to reset the current user and reinvite, set this flag to true. This will remove all mobile devices and/or active pending invites and create a new invite. Use caution when using this - it will reset any existing user with this nickname
+
 ### Consuming an invite using QR code
 
 Once an invite request is created, calling the `generate_qr_code` method returns a JSON that you can generate a QR code.

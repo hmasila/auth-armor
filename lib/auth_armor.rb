@@ -74,10 +74,11 @@ module AuthArmor
 	  	connect(payload: payload, method: :post, endpoint: "auth/request")
 	  end
 
-	  def invite_request(reference_id: nil, nickname:)
+	  def invite_request(reference_id: nil, reset_and_reinvite: false, nickname:)
 	  	payload = {
 	  		nickname: nickname,
-	  		reference_id: reference_id
+				reference_id: reference_id,
+				reset_and_reinvite: reset_and_reinvite
 	  	}
 
 	  	response = connect(payload: payload, method: :post, endpoint: "invite/request")
