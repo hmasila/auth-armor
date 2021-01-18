@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require "auth/armor/version"
 require 'rest-client'
 require 'json'
