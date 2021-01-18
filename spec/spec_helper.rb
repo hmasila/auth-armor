@@ -1,7 +1,9 @@
 # frozen_string_literal: true
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+$LOAD_PATH.unshift(File.dirname(__FILE__))
 
 require 'bundler/setup'
-require 'auth/armor'
+require 'auth_armor'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
