@@ -3,6 +3,7 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 
 require 'bundler/setup'
+require 'pry'
 require 'auth_armor'
 
 RSpec.configure do |config|

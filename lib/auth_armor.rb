@@ -28,11 +28,11 @@ module AuthArmor
 	      grant_type: "client_credentials",
 	      scope: scope
 	  	}
-
-	    response = RestClient.post("https://login.autharmor.com/connect/token", payload)
-
+	 
+		response = RestClient.post("https://login.autharmor.com/connect/token", payload) 
+		  
 	    if response.code == 200
-	    	@access_token = JSON.parse(response)["access_token"]
+			@access_token = JSON.parse(response)["access_token"]
 	    else
 	    	fail "Invalid response #{response.to_str} received."
 	    end
@@ -83,7 +83,7 @@ module AuthArmor
 				reset_and_reinvite: reset_and_reinvite
 	  	}
 
-	  	response = connect(payload: payload, method: :post, endpoint: "invite/request")
+	  	responsse = connect(payload: payload, method: :post, endpoint: "invite/request")
 
 	  	if response["code"] == :success
 	  		@invite_code = response["response"]
